@@ -1,0 +1,6 @@
+John Doe
+B.Tech in Computer Science
+Skills: Python, Machine Learning, TensorFlow, SQL, Git
+Projects: Resume Ranker AI, Chatbot with NLP
+Internship: Bosch AI Lab
+Achievements: Smart India Hackathon Finalist
