@@ -21,6 +21,7 @@ export default function HomePage() {
       .then((text) => {
         if (!resume.trim()) setResume(text);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleReview = async () => {
@@ -39,7 +40,39 @@ export default function HomePage() {
       if (!res.ok) {
         const errorBody = await res.text();
         console.error('API failed. Response body:', errorBody);
-        throw new Error('API failed');
+        try {
+          const parsedError = JSON.parse(errorBody);
+          const errorMessage =
+            typeof parsedError.error === 'string'
+              ? parsedError.error
+              : parsedError.error?.message || 'Unknown error';
+
+          if (errorMessage.toLowerCase().includes('quota')) {
+            alert('OpenAI quota exceeded. Loading sample data for demo...');
+            const fallbackReview = {
+              roles: [
+                { title: 'AI Engineer', match: '87%' },
+                { title: 'Data Analyst', match: '72%' },
+                { title: 'Research Intern', match: '65%' }
+              ],
+              strengths: ['Strong ML fundamentals', 'Project experience in GenAI'],
+              weaknesses: ['Missing production deployment experience'],
+              keywordMatch: ['Python', 'LLMs', 'Prompt Engineering'],
+              roleSummary: 'Best fit for AI/ML-focused engineering roles.',
+              finalScore: 82
+            };
+            sessionStorage.setItem('reviewResult', JSON.stringify(fallbackReview));
+            sessionStorage.setItem('resume', resume);
+            sessionStorage.setItem('role', role);
+            router.push('/review');
+            return;
+          }
+
+          alert(`Oops! ${errorMessage}\n\nPlease try again later or contact support.`);
+        } catch {
+          alert(`API Error: ${errorBody}`);
+        }
+        return;
       }
 
       const data = await res.json();
@@ -137,7 +170,7 @@ export default function HomePage() {
           </div>
         )}
 {/* in src\app\page.tsx */}
-        {inputMode === 'drive' && (
+        {/* {inputMode === 'drive' && (
           <div className="text-sm">
             <button
               type="button"
@@ -150,7 +183,7 @@ export default function HomePage() {
                       .addView(window.google.picker.ViewId.DOCS)
                       .setOAuthToken('YOUR_OAUTH_ACCESS_TOKEN')
                       .setDeveloperKey('YOUR_API_KEY')
-                      .setCallback((data: any) => {
+                      .setCallback((data: { action: string; docs: { id: string }[] }) => {
                         if (data.action === window.google.picker.Action.PICKED) {
                           const fileId = data.docs[0].id;
                           fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
@@ -171,7 +204,7 @@ export default function HomePage() {
               Import from Google Drive
             </button>
           </div>
-        )}
+        )} */}
 
         <RoleSelect value={role} onChange={setRole} />
 
