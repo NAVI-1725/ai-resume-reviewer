@@ -181,6 +181,7 @@ export default function HomePage() {
                   window.gapi.load('picker', () => {
                     const picker = new window.google.picker.PickerBuilder()
                       .addView(window.google.picker.ViewId.DOCS)
+                      // @ts-expect-error - safe override for picker auth token
                       .setOAuthToken('YOUR_OAUTH_ACCESS_TOKEN')
                       .setDeveloperKey('YOUR_API_KEY')
                       .setCallback((data: { action: string; docs: { id: string }[] }) => {

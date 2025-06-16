@@ -51,7 +51,7 @@ const [data, setData] = useState<ReviewResult | null>(null);
           <FeedbackCard title="Weaknesses / Gaps" items={data.weaknesses} />
           <FeedbackCard title="Skill & Keyword Match" items={data.skillMatch} />
           <FeedbackCard title="Role Fit Summary" items={data.roleSummary} />
-          <FeedbackCard title="Final Resume Score (/100)" items={[data.score.toString()]} />
+          <FeedbackCard title="Final Resume Score (/100)" items={[data.score?.toString() || 'N/A']} />
         </motion.div>
       </div>
     </main>
