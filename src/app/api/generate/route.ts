@@ -56,8 +56,8 @@ export async function POST(req: Request) {
     try {
       const parsed = JSON.parse(content);
       return NextResponse.json(parsed);
-    } catch (err: unknown) {
-      console.error(' Failed to parse JSON from OpenAI response:', content, '\nParse Error:', err);
+    } catch {
+      console.error(' Failed to parse JSON from OpenAI response:', content);
       return NextResponse.json({ error: 'OpenAI returned invalid JSON.' }, { status: 500 });
     }
   } catch (err: unknown) {

@@ -46,7 +46,7 @@ const [data, setData] = useState<ReviewResult | null>(null);
           transition={{ delay: 0.2 }}
         >
             {/* src\app\review\page.tsx */}
-          <FeedbackCard title="Top Role Matches" items={data.topRoles.map((r) => `${r.role} - ${r.fit}%`)} />
+          <FeedbackCard title="Top Role Matches" items={data.topRoles?.map((r) => `${r.role} - ${r.fit}%`) || []} />
           <FeedbackCard title="Strengths" items={data.strengths} />
           <FeedbackCard title="Weaknesses / Gaps" items={data.weaknesses} />
           <FeedbackCard title="Skill & Keyword Match" items={data.skillMatch} />
